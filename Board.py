@@ -1,11 +1,13 @@
 class Board:
     def __init__(self):
-        self.board = [['_'] * 10 for x in range(10)]
+        self.player_view = [['_'] * 10 for x in range(10)]
+        self.oppent_view = [['_'] * 10 for x in range(10)]
         self.hit_counter = 0
 
-    def display_board(self):
+    def display(self, for_opponent = False):
         print('   {}'.format(' '.join('ABCDEFGHIJ')))
-        for i, row in enumerate(self.board):
+        board = self.oppent_view if for_opponent else self.player_view
+        for i, row in enumerate(board):
             print('{}  {}'.format(i, ' '.join(row)))
 
     def has_all_ships_sank(self):
@@ -30,7 +32,7 @@ class Board:
 
         for x in range(row):
             for y in range(column):
-                if self.board[ship.x + x][ship.y + y] != '_':
+                if self.player_view[ship.x + x][ship.y + y] != '_':
                     return False
 
         return True
@@ -46,15 +48,32 @@ class Board:
         abrv = ship.name[0]
         for x in range(row):
             for y in range(column):
-                self.board[ship.x + x][ship.y + y] = abrv
+                self.player_view[ship.x + x][ship.y + y] = abrv
 
-    def display_oppents_board(self):
-        """Prints the players' opponent's board without the boat locations.
-        This function modifies the board and calls the display_board function to print the modified board."""
-        new_board = list()
-        for row in self.game_board:
-            with_Bs = '~'.join(row)
-            no_Bs = with_Bs.replace('B', '_')
-            new_board.append(no_Bs.split('~'))
+    def has_hit_same_spot(self, x, y):
+        spot = self.player_view[x][y]
+        return spot == 'X' or spot == 'O'
 
-        self.display_board()
+    def hit_or_miss(self, x, y):
+        if self.is_ship_here(x, y):
+            self.mark_as_hit(x, y)
+        else:
+            self.mark_as_miss(x, y)
+
+    def is_ship_here(self, x, y):
+        spot = self.player_view[x][y]
+        return spot != '_' or spot != 'X'
+
+    def mark_as_hit(self, x, y):
+        self.hit_counter = self.hit_counter + 1
+        self.player_view[x][y] = 'X'
+        self.oppent_view[x][y] = 'X'
+
+    def mark_as_miss(self, x, y):
+        self.player_view[x][y] = 'O'
+        self.oppent_view[x][y] = 'O'
+
+    def clear(self):
+        # TODO: the ship coordinates are not being reset. If issues occur, then update this
+        self.player_view = [['_'] * 10 for x in range(10)]
+        self.oppent_view = [['_'] * 10 for x in range(10)]
