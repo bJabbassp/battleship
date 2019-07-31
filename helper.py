@@ -5,7 +5,7 @@ def letter_to_integer(letter):
 def parse_coordinates(coordinates):
     try:
         letter_position, x = coordinates.split(',')
-        y = letter_to_integer(letter_position)
+        y = letter_to_integer(letter_position.upper())
         x = int(x)
     except:
         return False
