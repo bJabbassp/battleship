@@ -55,14 +55,19 @@ class Board:
         return spot == 'X' or spot == 'O'
 
     def hit_or_miss(self, x, y):
+        message = ''
         if self.is_ship_here(x, y):
             self.mark_as_hit(x, y)
+            message = 'HIT'
         else:
             self.mark_as_miss(x, y)
+            message = 'MISS'
+
+        return message
 
     def is_ship_here(self, x, y):
         spot = self.player_view[x][y]
-        return spot != '_' or spot != 'X'
+        return spot != '_'
 
     def mark_as_hit(self, x, y):
         self.hit_counter = self.hit_counter + 1

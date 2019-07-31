@@ -30,10 +30,12 @@ class Player:
                     ship.x = None
                     ship.y = None
 
+    def get_name(self):
+        return self.name
 
 class HumanPlayer(Player):
     def __init__(self):
-        super().__init__('player')
+        super().__init__('Player')
 
     def place_fleet(self):
         """Places all of the boats on the board. Helper method is the find_spot function."""
@@ -72,4 +74,4 @@ class HumanPlayer(Player):
 
 class ComputerPlayer(Player):
     def __init__(self):
-        super().__init__('computer')
+        super().__init__('Computer')
