@@ -20,7 +20,7 @@ class Game(object):
         return player_one, computer
 
     def who_goes_first(self):
-        if randit(0, 1):
+        if randint(0, 1):
             return [self.player_one, self.player_two]
 
         return [self.player_two, self.player_one]
@@ -91,9 +91,21 @@ def main():
 
                 hit_same_spot = waiting.board.has_hit_same_spot(x, y)
             else:
-                message = waiting.board.hit_or_miss(x, y)
+                if waiting.board.is_ship_here(x, y):
+                    code_name = waiting.board.which_ship_was_hit(x, y)
+                    ship = waiting.get_ship(code_name)
+                    ship.remove_one_hp()
 
-            print(f'{message}! The {waiting.name}\'s board: ')
+                    waiting.board.mark_spot_as_hit(x, y)
+                    if ship.has_sank():
+                        print(f'HIT! The {waiting.get_name()}\'s {ship.get_name()} has sank!')
+                    else:
+                        print(f'The {waiting.name}\'s {ship.name} has been HIT!')
+                else:
+                    waiting.board.mark_spot_as_miss(x, y)
+                    print('MISS!')
+
+            print(f'The {waiting.name}\'s board: ')
             waiting.board.display(for_opponent=True)
 
             # rotate players

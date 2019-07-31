@@ -45,36 +45,27 @@ class Board:
         else:
             column = ship.length
 
-        abrv = ship.name[0]
         for x in range(row):
             for y in range(column):
-                self.player_view[ship.x + x][ship.y + y] = abrv
+                self.player_view[ship.x + x][ship.y + y] = ship.code_name
 
     def has_hit_same_spot(self, x, y):
         spot = self.player_view[x][y]
         return spot == 'X' or spot == 'O'
 
-    def hit_or_miss(self, x, y):
-        message = ''
-        if self.is_ship_here(x, y):
-            self.mark_as_hit(x, y)
-            message = 'HIT'
-        else:
-            self.mark_as_miss(x, y)
-            message = 'MISS'
-
-        return message
-
     def is_ship_here(self, x, y):
         spot = self.player_view[x][y]
         return spot != '_'
 
-    def mark_as_hit(self, x, y):
+    def which_ship_was_hit(self, x, y):
+        return self.player_view[x][y]
+
+    def mark_spot_as_hit(self, x, y):
         self.hit_counter = self.hit_counter + 1
         self.player_view[x][y] = 'X'
         self.oppent_view[x][y] = 'X'
 
-    def mark_as_miss(self, x, y):
+    def mark_spot_as_miss(self, x, y):
         self.player_view[x][y] = 'O'
         self.oppent_view[x][y] = 'O'
 

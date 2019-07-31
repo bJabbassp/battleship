@@ -8,13 +8,14 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.board = Board()
-        self.fleet = (
-            Ship('carrier', 5),
-            Ship('battleship', 4),
-            Ship('cruiser', 3),
-            Ship('submarine', 3),
-            Ship('destroyer', 2)
+        self.fleet = ( # TODO: need to make this a dictionary
+            Ship('Carrier', 5, 'C'),
+            Ship('Battleship', 4, 'B'),
+            Ship('Cruiser', 3, 'R'),
+            Ship('Submarine', 3, 'S'),
+            Ship('Destroyer', 2, 'D')
         )
+        self.ships = {ship.code_name: ship for ship in self.fleet}
 
     def randomly_place_fleet(self):
         for ship in self.fleet:
@@ -29,6 +30,9 @@ class Player:
                 else:
                     ship.x = None
                     ship.y = None
+
+    def get_ship(self, ship):
+        return self.ships[ship]
 
     def get_name(self):
         return self.name
